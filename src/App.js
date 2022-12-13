@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import GlobalStyle from "./theme/GlobalStyles";
+import { createBrowserHistory } from "history";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import SearchBooksPage from "./pages/SearchBooksPage";
 
 function App() {
+  const history = createBrowserHistory({ basename: "/" });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <Router history={history}>
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/register">
+            <RegisterPage />
+          </Route>
+          <Route path="/admin/dashboard">
+            <AdminDashboardPage />
+          </Route>
+          <Route path="/user/search">
+            <SearchBooksPage />
+          </Route>
+        </Switch>
+      </Router>
+    </>
   );
 }
 
