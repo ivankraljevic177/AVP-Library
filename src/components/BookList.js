@@ -4,6 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import IconButton from "@material-ui/core/IconButton";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +39,7 @@ export default function SearchableBookList(props) {
     setDisplayedBooks(filteredBooks);
   }, [searchTerm, books]);
 
+  // add i remove ikonice prikazat i sakrit po potrebi
   return (
     <div>
       <TextField
@@ -55,6 +59,18 @@ export default function SearchableBookList(props) {
                 .map((key) => `${book[key]}`)
                 .join(" | ")}
             />
+            <IconButton
+              aria-label="borrow"
+              onClick={() => console.log("borrow")}
+            >
+              <AddCircleOutlineIcon />
+            </IconButton>
+            <IconButton
+              aria-label="return"
+              onClick={() => console.log("return")}
+            >
+              <RemoveCircleOutlineIcon />
+            </IconButton>
           </ListItem>
         ))}
       </List>
