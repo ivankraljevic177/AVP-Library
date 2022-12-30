@@ -5,10 +5,12 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.24.0",
+    "babel": "^6.23.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
+    "start": "^5.1.0",
     "styled-components": "^5.2.0"
   },
   "scripts": {
@@ -29,5 +31,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.5",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "8.1.0",
+    "webpack": "4.42.0"
   }
 }
