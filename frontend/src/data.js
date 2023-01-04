@@ -24,3 +24,28 @@ export const books = [
     publisher: "Ljevak",
   },
 ];
+
+
+
+export const users=[
+{
+  name:"Ivo",
+  surname:"Ivic",
+  rentdate:"12/12/2022"
+},
+
+{
+  name:"Ante",
+  surname:"Antic",
+  rentdate:"12/24/2022"
+},
+{
+  name:"Mate",
+  surname:"Matic",
+  rentdate:"null"
+},
+
+
+];
+
+

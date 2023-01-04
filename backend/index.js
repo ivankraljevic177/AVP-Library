@@ -7,7 +7,7 @@ const { Role, User, Book, BookLoan } = require("./models");
 const { Op } = require("sequelize");
 
 const app = express();
-const port = 4000;
+const port = 3306;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
