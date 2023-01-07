@@ -5,16 +5,32 @@ const bodyParser = require("body-parser");
 const config = require("dotenv").config();
 const { Role, User, Book, BookLoan } = require("./models");
 const { Op } = require("sequelize");
+const mysql=require("mysql");
 
 const app = express();
-const port = 3306;
+const port = 4000;
 
+const db=mysql.createConnection({
+  host:"localhost",
+  user:"root",
+  password:"",
+  database:"avplibrary",
+})
+
+db.connect((err)=>{
+  if(err){
+    throw err;
+  }
+  console.log("Connection Accepted!")
+})
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 app.listen(port, () => {
   console.log("Running on port " + port);
 });
+
 
 app.post("/login", async (req, res) => {
   try {
@@ -52,7 +68,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/return-book", verifyJwt, async (req, res) => {
+app.post("/return-book", async (req, res) => {
   try {
     const { bookId } = req.body;
     const userId = req.user.sub;
@@ -80,7 +96,6 @@ app.post("/return-book", verifyJwt, async (req, res) => {
     // update the loan's end date
     loan.dateEnd = new Date();
     await loan.save();
-
     await book.update({ copies: book.copies + 1 });
 
     // return success
@@ -91,7 +106,7 @@ app.post("/return-book", verifyJwt, async (req, res) => {
   }
 });
 
-app.post("/borrow-book", verifyJwt, async (req, res) => {
+app.post("/borrow-book", async (req, res) => {
   const book = await Book.findOne({ where: { id: req.body.bookId } });
   if (book === null) {
     return res.status(404).json({ message: "Book not found!" });
@@ -118,13 +133,19 @@ app.get("/available-books", async (req, res) => {
   return res.json(books);
 });
 
-app.get("/books", verifyJwt, async (req, res) => {
+
+app.get("/users", async (req, res) => {
+  const users = await User.findAll();
+  return res.json(users);
+});
+
+app.get("/books", async (req, res) => {
   // vrati sve, filter je već napravljen na frontendu, ako ga neko oće pribacit ovdje, može
   const books = await Book.findAll();
   return res.json(books);
 });
 
-app.get("/pending-users", verifyJwt, async (req, res) => {
+app.get("/pending-users",  async (req, res) => {
   const loans = await BookLoan.findAll({ where: { dateEnd: null } });
   const userIds = loans.map((loan) => loan.userId);
   const users = await User.findAll({

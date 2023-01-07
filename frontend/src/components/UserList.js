@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import Paper from "@material-ui/core/Paper";
+import { getAllUsers} from "../utils/api/axios.js";
 
 
 
@@ -28,9 +29,10 @@ const useStyles = makeStyles((theme) => ({
   export default function SearchableUserList(props) {
     const { users } = props;
     const [searchTerm, setSearchTerm] = useState("");
-    const [displayedUsers, setDisplayedUsers] = useState(users);
+    const [displayedUsers, setDisplayedUsers] = useState([]);
     const [category, setCategory] = React.useState('Majmune');
     const classes = useStyles();
+    const [allUsers, setAllUsers] = useState([]);
   
     const handleChange = (event) => {
       setSearchTerm(event.target.value);
@@ -38,15 +40,23 @@ const useStyles = makeStyles((theme) => ({
     const handleCategoryChange = (event) => {
       setCategory(event.target.value)
     };
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const data = await getAllUsers();
+        setAllUsers(data.data);
+      }
+      fetchData().catch(console.error);;
+    }, []);
   
     useEffect(() => {
-      const filteredUsers = users.filter((user) =>
+      const filteredUsers = allUsers.filter((user) =>
         Object.values(user).some((value) =>
           value.toString().toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
       setDisplayedUsers(filteredUsers);
-    }, [searchTerm, users]);
+    }, [searchTerm, allUsers]);
 
     function RentDateFilter(date){
        if(date=="null")
@@ -87,19 +97,6 @@ const useStyles = makeStyles((theme) => ({
                 <Paper>
                   {RentDateFilter(user.rentdate)}    
                 </Paper>
-
-                <IconButton
-                  aria-label="borrow"
-                  onClick={() => console.log("borrow")}
-                >
-                  <AddCircleOutlineIcon />
-                </IconButton>
-                <IconButton
-                  aria-label="return"
-                  onClick={() => console.log("return")}
-                >
-                  <RemoveCircleOutlineIcon />
-                </IconButton>
               </ListItem>
             ))}
           </List>

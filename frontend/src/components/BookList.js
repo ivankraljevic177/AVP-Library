@@ -10,7 +10,7 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import sample from "../PDF/muha.pdf";
 import Link from "@material-ui/core/Link";
-
+import { getAllBooks,borrowBook } from "../utils/api/axios.js";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,23 +35,31 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchableBookList(props) {
   const { books } = props;
   const [searchTerm, setSearchTerm] = useState("");
-  const [displayedBooks, setDisplayedBooks] = useState(books);
+  const [displayedBooks, setDisplayedBooks] = useState([]);
   const classes = useStyles();
+  const [allBooks, setAllBooks] = useState([]);
 
-
-
+ 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   useEffect(() => {
-    const filteredBooks = books.filter((book) =>
+    const fetchData = async () => {
+      const data = await getAllBooks();
+      setAllBooks(data.data);
+    }
+    fetchData().catch(console.error);;
+  }, []);
+
+  useEffect(() => {
+    const filteredBooks = allBooks.filter((book) =>
       Object.values(book).some((value) =>
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
     setDisplayedBooks(filteredBooks);
-  }, [searchTerm, books]);
+  }, [searchTerm, allBooks]);
   
   // add i remove ikonice prikazat i sakrit po potrebi
   return (
@@ -67,7 +75,7 @@ export default function SearchableBookList(props) {
         {displayedBooks.map((book) => (
           <ListItem key={book.id}>
             <ListItemText
-              primary={book.title}
+              primary={book.name}
               secondary={Object.keys(book)
                 .filter((key) => key !== "title")
                 .map((key) => `${book[key]}`)
@@ -76,7 +84,7 @@ export default function SearchableBookList(props) {
  <Link href="viewer" variant="body2" className={classes.link}>View</Link>
             <IconButton
               aria-label="borrow"
-              onClick={() => console.log("borrow")}
+              onClick={() =>borrowBook(book.id)}
             >
               <AddCircleOutlineIcon />
             </IconButton>
