@@ -6,6 +6,7 @@ import GlobalStyle from "./theme/GlobalStyles";
 import { createBrowserHistory } from "history";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import SearchBooksPage from "./pages/SearchBooksPage";
+import ViewerPage from "./pages/ViewerPage";
 
 function App() {
   const history = createBrowserHistory({ basename: "/" });
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path="/user/search">
             <SearchBooksPage />
+          </Route>
+          <Route path="/user/viewer">
+            <ViewerPage />
           </Route>
         </Switch>
       </Router>

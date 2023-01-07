@@ -8,11 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import Paper from "@material-ui/core/Paper";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Box from "@material-ui/core/Box";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -77,24 +73,7 @@ const useStyles = makeStyles((theme) => ({
             onChange={handleChange}
             className={classes.center}
           />
-       <Box sx={{ minWidth: 140 }}>
-      <FormControl>
-        <InputLabel id="Category-Search">Category</InputLabel>
-        <Select
-          labelId="Category-Search"
-          id="Category-Search"
-          value={category}
-          label="Age"
-          onChange={handleCategoryChange}
-        >
-          <MenuItem value={1}>Format</MenuItem>
-          <MenuItem value={2}>Genre</MenuItem>
-          <MenuItem value={3}>ISBN</MenuItem>
-          <MenuItem value={4}>Author</MenuItem>
-          <MenuItem value={5}>Publisher</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
+    
           <List className={classes.root}>
             {displayedUsers.map((user) => (
               <ListItem key={user.id}>
