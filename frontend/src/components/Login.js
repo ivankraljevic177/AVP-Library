@@ -1,18 +1,21 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Redirect, useHistory, useNavigate } from "react-router-dom";
 import { loginUser } from "../utils/api";
+import { useUserContext } from "../utils/context/UserContextProvider";
 
 import "../styles/Login.css";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
+  const { user, setUser } = useUserContext();
 
-  const handleSubmit = async () => {
-    const user = await loginUser({ username, password });
-
-    console.log(user);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const user = await loginUser({ email: username, password });
+    setUser(user);
+    navigate("/");
   };
 
   return (
