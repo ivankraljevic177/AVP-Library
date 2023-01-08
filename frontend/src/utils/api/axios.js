@@ -15,6 +15,7 @@ const API = axios.create({
 
 export const createUser = newUser => API.post('/register', newUser);
 export const loginUser = (newUser) => API.post("/login", newUser);
+export const addBook = newBook => API.post("/addBook", newBook);
 export const getAllBooks = () => API.get("/books");
 export const getAllUsers = () => API.get("/users");
 export const borrowBook = (bookId, userId) => API.post("/borrow-book", {bookId, userId});

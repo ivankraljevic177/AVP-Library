@@ -74,20 +74,25 @@ app.post("/register", async (req, res) => {
   
 });
 
-/*
-app.post("/register", async (req, res) => {
-  const [user, created] = await User.findOrCreate({
-    where: { email: req.body.email },
-    defaults: {
-      role: "user",
-      ...req.body,
-    },
-  });
-  if (created) {
-    return res.json(user);
+app.post("/addBook", async (req, res) => {
+  try {
+    const [book, created] = await Book.findOrCreate({
+      where: { name: req.body.name },
+      defaults: {
+        ...req.body,
+      },
+    });
+    if (created) {
+      return res.json(book);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred" });
   }
+  
 });
-*/
+
+
 
 app.post("/return-book", verifyJwt, async (req, res) => {
   try {
