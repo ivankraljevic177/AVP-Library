@@ -9,6 +9,7 @@ import AdminDashboardPage from "../pages/AdminDashboardPage";
 import LoginPage from "../pages/LoginPage";
 import { UserContextProvider } from "../utils/context/UserContextProvider";
 import Login from "../components/Login";
+import SearchBooksPage from "../pages/SearchBooksPage";
 
 const AppRouter = () => {
   const [user, setUser] = React.useState();
@@ -23,10 +24,13 @@ const AppRouter = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App />}>
-              <Route index element={<Home />} />
+              <Route index element={<SearchBooksPage />} />
               <Route path="register" element={<RegisterPage />} />
               <Route path="login" element={<Login />} />
-            </Route>
+              <Route path="/admin/dashboard" element={<AdminDashboardPage/>}/>
+              {/*<Route path="/user/search" element={<SearchBooksPage />}/>     */}
+            </Route>            
+             
             <Route
               path="*"
               element={

@@ -7,10 +7,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import sample from "../PDF/muha.pdf";
 import Link from "@material-ui/core/Link";
-import { getAllBooks,borrowBook } from "../utils/api/axios.js";
+import { getAllBooks,borrowBook, returnBook, verifyUser } from "../utils/api/axios.js";
+import { useUserContext } from "../utils/context/UserContextProvider";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +38,9 @@ export default function SearchableBookList(props) {
   const [displayedBooks, setDisplayedBooks] = useState([]);
   const classes = useStyles();
   const [allBooks, setAllBooks] = useState([]);
+  const {user} = useUserContext();
+
+  console.log(user.token);
 
  
   const handleChange = (event) => {
@@ -84,13 +87,13 @@ export default function SearchableBookList(props) {
  <Link href="viewer" variant="body2" className={classes.link}>View</Link>
             <IconButton
               aria-label="borrow"
-              onClick={() =>borrowBook(book.id)}
+              onClick={() =>borrowBook(book.id, user.id)}
             >
               <AddCircleOutlineIcon />
             </IconButton>
             <IconButton
               aria-label="return"
-              onClick={() => console.log("return")}
+              onClick={() => verifyUser()}
             >
               <RemoveCircleOutlineIcon />
             </IconButton>

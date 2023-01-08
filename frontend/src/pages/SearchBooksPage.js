@@ -7,7 +7,6 @@ import { books } from "../data";
 export default function SearchBooksPage() {
   return (
     <>
-      <Header />
       <Container>
         <BookList books={books} />
       </Container>

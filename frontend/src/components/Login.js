@@ -4,6 +4,7 @@ import { loginUser } from "../utils/api";
 import { useUserContext } from "../utils/context/UserContextProvider";
 
 import "../styles/Login.css";
+import { setAuthToken } from "../utils/helpers/auth-helpers";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -14,9 +15,12 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const user = await loginUser({ email: username, password });
-    setUser(user);
+    setUser(user.data);
+    setAuthToken(user.token); 
     navigate("/");
   };
+  
+  console.log(user);
 
   return (
     <div className="login-form">

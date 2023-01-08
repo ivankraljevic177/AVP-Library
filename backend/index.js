@@ -68,7 +68,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/return-book", async (req, res) => {
+app.post("/return-book", verifyJwt, async (req, res) => {
   try {
     const { bookId } = req.body;
     const userId = req.user.sub;
@@ -106,7 +106,7 @@ app.post("/return-book", async (req, res) => {
   }
 });
 
-app.post("/borrow-book", async (req, res) => {
+app.post("/borrow-book", verifyJwt, async (req, res) => {
   const book = await Book.findOne({ where: { id: req.body.bookId } });
   if (book === null) {
     return res.status(404).json({ message: "Book not found!" });
@@ -152,4 +152,20 @@ app.get("/pending-users",  async (req, res) => {
     where: { id: { [Op.in]: userIds } },
   });
   return res.json(users);
+});
+
+app.get("/verify", verifyJwt, async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.user.sub },
+    });
+
+    if (!user) {
+      throw Error("User does not exist");
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 });
