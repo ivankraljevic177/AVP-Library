@@ -3,13 +3,27 @@ import { Outlet } from "react-router-dom";
 import { useUserContext } from "./utils/context/UserContextProvider";
 import GlobalStyle from "./theme/GlobalStyles";
 import Header from "./components/Header";
-import { setAuthToken } from "./utils/helpers/auth-helpers";
+import { getAuthToken, setAuthToken } from "./utils/helpers/auth-helpers";
+import { verifyUser } from "./utils/api/axios";
 
 function App() {
   const { user, setUser } = useUserContext();
+
+
   useEffect(() => {
-    setUser({ email: "ivan@ivan.com", token: "eyeioajeofaweoifawe", role: 1 });
-    setAuthToken("ergijaoergoipaergjpea");
+
+    console.log(getAuthToken())
+
+    const getData = async () => {
+      const response = await verifyUser();
+
+      setUser(response.data)
+
+      console.log(response)
+    }
+
+    getData()
+
   }, [setUser]);
 
   console.log("user", user);

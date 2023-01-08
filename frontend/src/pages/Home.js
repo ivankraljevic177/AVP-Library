@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import { getAllBooks } from "../utils/api/axios";
+import SearchBooksPage from "./SearchBooksPage";
 
 export const Home = () => {
   const handleClick = async () => {
@@ -10,6 +11,7 @@ export const Home = () => {
   return (
     <div>
       Home
+      <SearchBooksPage />
       <Button onClick={handleClick}>submit</Button>
     </div>
   );

@@ -8,6 +8,7 @@ import AdminDashboardPage from "../pages/AdminDashboardPage";
 import { useUserContext } from "../utils/context/UserContextProvider";
 import Login from "../components/Login";
 import { Home } from "../pages/Home";
+import SearchBooksPage from "../pages/SearchBooksPage";
 
 const AppRouter = () => {
   const { user } = useUserContext();
@@ -19,6 +20,8 @@ const AppRouter = () => {
             <Route index element={user ? <Home /> : <Navigate to="/login" />} />
             <Route path="register" element={<RegisterPage />} />
             <Route path="login" element={<Login />} />
+            <Route path="/admin/dashboard" element={<AdminDashboardPage/>}/>
+            <Route path="/user/search" element={<SearchBooksPage />}/> 
             <Route
               path="/admin/dashboard"
               element={

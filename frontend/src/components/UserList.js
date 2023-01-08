@@ -23,9 +23,7 @@ const useStyles = makeStyles((theme) => ({
       "justify-content": "center",
     },
   }));
-
-
-
+  
   export default function SearchableUserList(props) {
     const { users } = props;
     const [searchTerm, setSearchTerm] = useState("");

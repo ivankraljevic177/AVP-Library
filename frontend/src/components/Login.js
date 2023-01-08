@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../utils/api";
 import { useUserContext } from "../utils/context/UserContextProvider";
+import { setAuthToken } from "../utils/helpers/auth-helpers";
 
 import "../styles/Login.css";
 
@@ -20,10 +21,19 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const user = await loginUser({ email: username, password });
+    setUser(user.data);
+    setAuthToken(user.data.token); 
+    navigate("/");
+  };
+/*
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     // const user = await loginUser({ email: username, password });
     setUser({ email: "ivan@ivan.hr", token: "ejrajervjer", role: 1 });
     navigate("/");
   };
+  */
 
   return (
     <div className="login-form">
