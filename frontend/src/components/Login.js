@@ -1,24 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 import '../styles/Login.css';
+import { loginUser } from "../utils/api/axios.js";
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
+  
 
-  function handleSubmit(event) {
-    event.preventDefault();
 
-    // validate with backend
-    if (username === 'admin' && password === 'password') {
+  const fetchUser=async()=>{
+     const data= await loginUser(username,password);
+     return data.data;
+     };
+
+const handleSubmit=async(event)=>
+  { event.preventDefault();
+    const data=await fetchUser();
+
+    if (username === data.email && password === data.password) {
       history.push('/home');
-    } else {
-      // error username and pass are invalid
-      alert('Invalid username or password');
-    }
+    } else {alert('Invalid username or password'); }
   }
-
+  
   return (
     <div className='login-form'>
     
@@ -39,7 +44,7 @@ function Login() {
           onChange={(event) => setPassword(event.target.value)}
         />
       </label>
-      <button type="submit" className='loginbutton'>Login</button>
+      <button type="submit" className='loginbutton'onSubmit={handleSubmit}>Login</button>
     </form>
       
     </div>

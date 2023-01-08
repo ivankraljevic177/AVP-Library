@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
+import { registerUser } from "../utils/api/axios.js";
 
 function RegistrationForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   function handleSubmit(event) {
@@ -13,7 +15,9 @@ function RegistrationForm() {
       alert('Passwords do not match');
       return;
     }
-    // Submit form data to server
+    else{
+        registerUser(username,email,password);
+    }
   }
 
   return (
@@ -26,6 +30,14 @@ function RegistrationForm() {
           type="text"
           value={username}
           onChange={event => setUsername(event.target.value)}
+        />
+      </label>
+      <label>
+        Email:
+        <input
+          type="text"
+          value={email}
+          onChange={event => setEmail(event.target.value)}
         />
       </label>
       <br />

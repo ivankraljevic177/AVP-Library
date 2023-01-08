@@ -145,7 +145,7 @@ app.get("/books", async (req, res) => {
   return res.json(books);
 });
 
-app.get("/pending-users",  async (req, res) => {
+app.get("/pending-users",async (req, res) => {
   const loans = await BookLoan.findAll({ where: { dateEnd: null } });
   const userIds = loans.map((loan) => loan.userId);
   const users = await User.findAll({

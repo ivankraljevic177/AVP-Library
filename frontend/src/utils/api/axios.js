@@ -13,11 +13,13 @@ const API = axios.create({
 // export const updateSubject = (newSubject, id) => API.post(`/subjects/${id}`, newSubject);
 
 // export const createUser = newUser => API.post('/users', newUser);
-export const loginUser = (newUser) => API.post("/login", newUser);
+export const loginUser = (email,password) => API.post("/login", {email:email,password:password});
+export const registerUser = (name,email,password) => API.post("/register", {name:name,email:email,password:password});
 export const getAllBooks = () => API.get("/books");
 export const getAllUsers = () => API.get("/users");
-export const borrowBook = (bookId) => API.post("/borrow-book",
-{bookId:bookId});
+export const borrowBook = (bookId, userId) => API.post("/borrow-book", {bookId, userId});
+export const returnBook = (bookId, userId) => API.post("/return-book", {bookId, userId});
+export const verifyUser = () => API.get('/verify');
 // export const verifyUser = () => API.get('/auth/user');
 
 // export const getAllStudents = () => API.get('auth/students');
