@@ -56,6 +56,26 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
+  try {
+    const [user, created] = await User.findOrCreate({
+      where: { email: req.body.email },
+      defaults: {
+        roleid: 2,
+        ...req.body,
+      },
+    });
+    if (created) {
+      return res.json(user);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred" });
+  }
+  
+});
+
+/*
+app.post("/register", async (req, res) => {
   const [user, created] = await User.findOrCreate({
     where: { email: req.body.email },
     defaults: {
@@ -67,6 +87,7 @@ app.post("/register", async (req, res) => {
     return res.json(user);
   }
 });
+*/
 
 app.post("/return-book", verifyJwt, async (req, res) => {
   try {

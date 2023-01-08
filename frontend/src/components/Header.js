@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <HeaderWrapper>
       <Typography color="primary">{user && user.email}</Typography>
-      {user && user.role === 1 && (
+      {user && user.roleid === 1 && (
         <NavLink to="/admin/dashboard">Admin Dashboard</NavLink>
       )}
       <HeaderImage src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Closed_Book_Icon.svg/1200px-Closed_Book_Icon.svg.png" />

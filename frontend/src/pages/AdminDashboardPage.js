@@ -7,7 +7,6 @@ import { users } from "../data";
 export default function AdminDashboardPage() {
   return (
     <>
-      <Header />
       <Container>Admin dashboard page
       <UserList users={users} /></Container>;
     </>

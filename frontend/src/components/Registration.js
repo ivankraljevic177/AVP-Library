@@ -1,31 +1,57 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
+import { createUser } from '../utils/api/axios';
+import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { setAuthToken } from "../utils/helpers/auth-helpers";
+import { useUserContext } from "../utils/context/UserContextProvider";
 
 function RegistrationForm() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    // Validate form fields
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
+  const { user, setUser } = useUserContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
     }
-    // Submit form data to server
-  }
+  }, [user, navigate]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if(password === confirmPassword){
+      const response = await createUser({ email, password, name });
+      setUser(response.data);
+      setAuthToken(response.data.token); 
+      navigate("/");
+    }else{
+      alert("Passwords don't match");
+    }    
+  };
 
   return (
     <div className='login-form'>
 
     <form onSubmit={handleSubmit}>
+    <label>
+        Name:
+        <input
+          type="text"
+          value={name}
+          onChange={event => setName(event.target.value)}
+        />
+      </label>
+      <br />
       <label>
         Username:
         <input
           type="text"
-          value={username}
-          onChange={event => setUsername(event.target.value)}
+          value={email}
+          onChange={event => setEmail(event.target.value)}
         />
       </label>
       <br />

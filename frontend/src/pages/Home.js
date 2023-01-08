@@ -10,9 +10,7 @@ export const Home = () => {
 
   return (
     <div>
-      Home
       <SearchBooksPage />
-      <Button onClick={handleClick}>submit</Button>
     </div>
   );
 };

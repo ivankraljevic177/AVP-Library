@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 27, 2022 at 08:31 PM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 7.2.11
+-- Generation Time: Jan 08, 2023 at 08:51 PM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -35,7 +34,6 @@ CREATE TABLE `bookloans` (
   `dateEnd` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin2 COLLATE=latin2_croatian_ci;
 
-
 -- --------------------------------------------------------
 
 --
@@ -58,8 +56,8 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`id`, `name`, `author`, `ISBN`, `format`, `genre`, `publisher`, `copies`) VALUES
-(1, 'The Great Gatsby', 'F. Scott Fitzgerald', '9781586638450', 'paperback', 'fiction', 'Scribner', 4),
-(2, 'To Kill a Mockingbird', 'Harper Lee', '9780446310789', 'hardcover', 'fiction', 'Harper', 3);
+(1, 'The Great Gatsby', 'F. Scott Fitzgerald', '9781586638450', 'paperback', 'fiction', 'Scribner', 1),
+(2, 'To Kill a Mockingbird', 'Harper Lee', '9780446310789', 'hardcover', 'fiction', 'Harper', 1);
 
 -- --------------------------------------------------------
 
@@ -99,8 +97,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `roleid`) VALUES
-(1, 'John Smith', 'john@example.com', 'password123', 1),
-(2, 'Jane Doe', 'jane@example.com', 'password456', 2);
+(1, 'user', 'user@user.com', 'user', 2),
+(5, 'admin', 'admin@admin.com', 'admin', 1),
+(8, 'lidija', 'lidija@planetlile@com', 'sise', 2),
+(9, 'pamela', 'pamela@baywatch.com', 'sise', 2);
 
 --
 -- Indexes for dumped tables
@@ -131,6 +131,16 @@ ALTER TABLE `roles`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD KEY `roleid` (`roleid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
