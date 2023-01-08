@@ -7,11 +7,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import sample from "../PDF/muha.pdf";
 import Link from "@material-ui/core/Link";
-import { getAllBooks,borrowBook } from "../utils/api/axios.js";
-
+import { getAllBooks, borrowBook } from "../utils/api/axios.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,13 +21,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     "justify-content": "center",
   },
-  link:{
+  link: {
     color: "#4c4a37",
     fontFamily: "'Source Sans Pro',sans-serif",
     fontSize: "18px",
     lineHeight: "32px",
-    
-  }
+  },
 }));
 
 export default function SearchableBookList(props) {
@@ -39,7 +36,6 @@ export default function SearchableBookList(props) {
   const classes = useStyles();
   const [allBooks, setAllBooks] = useState([]);
 
- 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -48,8 +44,8 @@ export default function SearchableBookList(props) {
     const fetchData = async () => {
       const data = await getAllBooks();
       setAllBooks(data.data);
-    }
-    fetchData().catch(console.error);;
+    };
+    fetchData().catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -60,7 +56,7 @@ export default function SearchableBookList(props) {
     );
     setDisplayedBooks(filteredBooks);
   }, [searchTerm, allBooks]);
-  
+
   // add i remove ikonice prikazat i sakrit po potrebi
   return (
     <div>
@@ -81,11 +77,10 @@ export default function SearchableBookList(props) {
                 .map((key) => `${book[key]}`)
                 .join(" | ")}
             />
- <Link href="viewer" variant="body2" className={classes.link}>View</Link>
-            <IconButton
-              aria-label="borrow"
-              onClick={() =>borrowBook(book.id)}
-            >
+            <Link href="viewer" variant="body2" className={classes.link}>
+              View
+            </Link>
+            <IconButton aria-label="borrow" onClick={() => borrowBook(book.id)}>
               <AddCircleOutlineIcon />
             </IconButton>
             <IconButton

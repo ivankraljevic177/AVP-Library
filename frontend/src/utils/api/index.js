@@ -4,7 +4,7 @@ import { getAuthToken } from "../helpers/auth-helpers";
 const API = axios.create({
   baseURL: "http://localhost:4000",
   headers: {
-    Authorization: `Bearer ${getAuthToken}`,
+    Authorization: `Bearer ${getAuthToken()}`,
   },
 });
 

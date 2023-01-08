@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
 import AppRouter from "./routes/AppRouter";
+import { UserContextProvider } from "./utils/context/UserContextProvider";
 
 ReactDOM.render(
-  <AppRouter />,
+  <UserContextProvider>
+    <AppRouter />
+  </UserContextProvider>,
 
   document.getElementById("root")
 );

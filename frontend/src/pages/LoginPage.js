@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../components/Header";
 import { Container } from "../styles/Container.styled";
 import Login from "../components/Login";
 import { useUserContext } from "../utils/context/UserContextProvider";

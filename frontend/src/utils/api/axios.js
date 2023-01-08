@@ -4,7 +4,7 @@ import { getAuthToken } from "../helpers/auth-helpers";
 const API = axios.create({
   baseURL: "http://localhost:4000",
   headers: {
-    Authorization: `Bearer ${getAuthToken}`,
+    Authorization: `Bearer ${getAuthToken()}`,
   },
 });
 
@@ -16,8 +16,8 @@ const API = axios.create({
 export const loginUser = (newUser) => API.post("/login", newUser);
 export const getAllBooks = () => API.get("/books");
 export const getAllUsers = () => API.get("/users");
-export const borrowBook = (bookId) => API.post("/borrow-book",
-{bookId:bookId});
+export const borrowBook = (bookId) =>
+  API.post("/borrow-book", { bookId: bookId });
 // export const verifyUser = () => API.get('/auth/user');
 
 // export const getAllStudents = () => API.get('auth/students');

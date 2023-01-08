@@ -1,12 +1,16 @@
 import React from "react";
-import BookList from "../components/BookList";
-import Header from "../components/Header";
-import { Container } from "../styles/Container.styled";
+import { Button } from "@material-ui/core";
+import { getAllBooks } from "../utils/api/axios";
 
-export default function SearchBooksPage() {
+export const Home = () => {
+  const handleClick = async () => {
+    await getAllBooks();
+  };
+
   return (
-    <>
-      <Container>HOME</Container>;
-    </>
+    <div>
+      Home
+      <Button onClick={handleClick}>submit</Button>
+    </div>
   );
-}
+};

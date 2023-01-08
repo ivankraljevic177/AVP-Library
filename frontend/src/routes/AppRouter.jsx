@@ -1,43 +1,45 @@
 import React from "react";
 import App from "../App";
-import Home from "../pages/Home";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import RegisterPage from "../pages/RegisterPage";
 import AdminDashboardPage from "../pages/AdminDashboardPage";
-import LoginPage from "../pages/LoginPage";
-import { UserContextProvider } from "../utils/context/UserContextProvider";
+import { useUserContext } from "../utils/context/UserContextProvider";
 import Login from "../components/Login";
+import { Home } from "../pages/Home";
 
 const AppRouter = () => {
-  const [user, setUser] = React.useState();
-
-  React.useEffect(() => {
-    // setUser({ name: "Ivan", email: "ivan@gmail.com", jwt: "aerfaorevooew" });
-  }, [setUser]);
-
+  const { user } = useUserContext();
   return (
     <div>
-      <UserContextProvider initialUser={user}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<App />}>
-              <Route index element={<Home />} />
-              <Route path="register" element={<RegisterPage />} />
-              <Route path="login" element={<Login />} />
-            </Route>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={user ? <Home /> : <Navigate to="/login" />} />
+            <Route path="register" element={<RegisterPage />} />
+            <Route path="login" element={<Login />} />
             <Route
-              path="*"
+              path="/admin/dashboard"
               element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
+                user && user.role === 1 ? (
+                  <AdminDashboardPage />
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
-          </Routes>
-        </BrowserRouter>
-      </UserContextProvider>
+          </Route>
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+              </main>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };
