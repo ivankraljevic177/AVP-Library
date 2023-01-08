@@ -56,8 +56,8 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`id`, `name`, `author`, `ISBN`, `format`, `genre`, `publisher`, `copies`) VALUES
-(1, 'The Great Gatsby', 'F. Scott Fitzgerald', '9781586638450', 'paperback', 'fiction', 'Scribner', 1),
-(2, 'To Kill a Mockingbird', 'Harper Lee', '9780446310789', 'hardcover', 'fiction', 'Harper', 1);
+(1, 'The Great Gatsby', 'F. Scott Fitzgerald', '9781586638450', 'paperback', 'fiction', 'Scribner', 3),
+(2, 'To Kill a Mockingbird', 'Harper Lee', '9780446310789', 'hardcover', 'fiction', 'Harper', 3);
 
 -- --------------------------------------------------------
 
