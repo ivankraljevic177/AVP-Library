@@ -171,6 +171,11 @@ app.get("/books", async (req, res) => {
   return res.json(books);
 });
 
+app.get("/loanedBooks", async (req, res) => {
+  const loanedBooks = await BookLoan.findAll();
+  return res.json(loanedBooks);
+});
+
 app.get("/pending-users",  async (req, res) => {
   const loans = await BookLoan.findAll({ where: { dateEnd: null } });
   const userIds = loans.map((loan) => loan.userId);
@@ -195,3 +200,22 @@ app.get("/verify", verifyJwt, async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+
+//nez jel radi jos
+app.get("/getBookById",  async (req, res) => {
+  try {
+    const book = await Book.findOne({
+      where: { bookId: req.book.bookId },
+    });
+
+    if (!book) {
+      throw Error("User does not exist");
+    }
+
+    res.json(book);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
