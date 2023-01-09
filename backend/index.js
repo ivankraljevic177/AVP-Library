@@ -173,7 +173,7 @@ app.get("/loanedBooks", async (req, res) => {
 
 app.get("/books-with-loan-counts", async (req, res) => {
   const query = `
-  SELECT b.id AS bookId, b.name, COUNT(l.bookId) AS loanCount
+  SELECT b.id AS bookId, b.name, b.author, COUNT(l.bookId) AS loanCount
   FROM books b
   LEFT JOIN bookLoans l ON b.id = l.bookId
   GROUP BY b.id

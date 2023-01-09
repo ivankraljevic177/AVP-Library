@@ -53,11 +53,26 @@ export default function MostLoaned(props) {
     <div>
       Loan count:
       <List className={classes.root}>
-        {allBookLoans.map((book) => (
-          <ListItem key={book.id}>
-            <ListItemText primary={book.name} secondary={book.loanCount} />
-          </ListItem>
-        ))}
+        {allBookLoans
+          .filter((item) => item.loanCount !== 0)
+          .map((book) => (
+            <ListItem key={book.id}>
+              <ListItemText
+                primary={book.name}
+                secondary={`Times loaned: ${book.loanCount}`}
+              />
+            </ListItem>
+          ))}
+      </List>
+      Never loaned books:
+      <List className={classes.root}>
+        {allBookLoans
+          .filter((item) => item.loanCount === 0)
+          .map((book) => (
+            <ListItem key={book.id}>
+              <ListItemText primary={book.name} secondary={book.author} />
+            </ListItem>
+          ))}
       </List>
     </div>
   );
