@@ -4,15 +4,17 @@ import { Button, Typography } from "@material-ui/core";
 //styles
 import { HeaderImage, HeaderWrapper } from "../styles/Header.styled";
 import { useUserContext } from "../utils/context/UserContextProvider";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { removeAuthToken } from "../utils/helpers/auth-helpers";
 
 const Header = () => {
   const { user, setUser } = useUserContext();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     removeAuthToken();
     setUser(null);
+    navigate("/");
   };
 
   return (
