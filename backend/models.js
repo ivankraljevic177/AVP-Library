@@ -129,4 +129,5 @@ module.exports = {
   User,
   Book,
   BookLoan,
+  sequelize,
 };

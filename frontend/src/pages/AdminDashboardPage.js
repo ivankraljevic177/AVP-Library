@@ -5,6 +5,7 @@ import UserList from "../components/UserList";
 import { users } from "../data";
 import AddBookForm from "../components/AddBook";
 import LateList from "../components/LateList";
+import MostLoaned from "../components/MostLoaned";
 
 export default function AdminDashboardPage() {
   return (
@@ -18,6 +19,7 @@ export default function AdminDashboardPage() {
       }}
     >
       <AddBookForm />
+      <MostLoaned />
       <UserList users={users} />
       <LateList />
     </div>

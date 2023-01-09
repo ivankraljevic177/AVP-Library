@@ -1,9 +1,10 @@
 const { signJwt, verifyJwt } = require("./jwt");
 const express = require("express");
 const cors = require("cors");
+const Sequelize = require("sequelize");
 const bodyParser = require("body-parser");
 const config = require("dotenv").config();
-const { Role, User, Book, BookLoan } = require("./models");
+const { Role, User, Book, BookLoan, sequelize } = require("./models");
 const { Op } = require("sequelize");
 const mysql = require("mysql");
 
@@ -168,6 +169,25 @@ app.get("/books", async (req, res) => {
 app.get("/loanedBooks", async (req, res) => {
   const loanedBooks = await BookLoan.findAll({ include: [Book, User] });
   return res.json(loanedBooks);
+});
+
+app.get("/books-with-loan-counts", async (req, res) => {
+  const query = `
+  SELECT b.id AS bookId, b.name, COUNT(l.bookId) AS loanCount
+  FROM books b
+  LEFT JOIN bookLoans l ON b.id = l.bookId
+  GROUP BY b.id
+`;
+
+  sequelize
+    .query(query, { type: Sequelize.QueryTypes.SELECT })
+    .then((books) => {
+      res.json(books);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error retrieving books");
+    });
 });
 
 app.get("/pending-users", async (req, res) => {
