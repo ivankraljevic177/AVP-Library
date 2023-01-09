@@ -4,15 +4,22 @@ import { Container } from "../styles/Container.styled";
 import UserList from "../components/UserList";
 import { users } from "../data";
 import AddBookForm from "../components/AddBook";
-import LateList from "../components/LateList"
+import LateList from "../components/LateList";
 
 export default function AdminDashboardPage() {
   return (
-    <>
-    <AddBookForm/>
-      <Container>Admin dashboard page
-      <UserList users={users} /></Container>;
-      <LateList/>
-    </>
+    <div
+      style={{
+        display: "flex",
+        flexGrow: 1,
+        gap: "4rem",
+        padding: "4rem",
+        justifyContent: "center",
+      }}
+    >
+      <AddBookForm />
+      <UserList users={users} />
+      <LateList />
+    </div>
   );
 }
