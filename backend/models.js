@@ -117,6 +117,8 @@ const BookLoan = sequelize.define(
 );
 
 BookLoan.belongsTo(Book, { foreignKey: "bookId" });
+BookLoan.hasOne(Book, { foreignKey: "id" });
+BookLoan.hasOne(User, { foreignKey: "id" });
 Book.hasMany(BookLoan, { foreignKey: "bookId" });
 
 BookLoan.belongsTo(User, { foreignKey: "userId" });

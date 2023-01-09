@@ -3,7 +3,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { getAllBooks, borrowBook , returnBook, getAllLoanedBooks, getBookById} from "../utils/api/axios.js";
+import {
+  getAllBooks,
+  borrowBook,
+  returnBook,
+  getAllLoanedBooks,
+  getBookById,
+} from "../utils/api/axios.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +30,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SearchableBookList(props) {
-
-  //loaned books table  
+  //loaned books table
   const [searchTerm, setSearchTerm] = useState("");
   const [displayedBooks, setDisplayedBooks] = useState([]);
   const classes = useStyles();
-  const [allBooks, setAllBooks] = useState([]);
+  const [allBookLoans, setAllBookLoans] = useState([]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -38,38 +43,39 @@ export default function SearchableBookList(props) {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getAllLoanedBooks();
-      setAllBooks(data.data);
+      setAllBookLoans(data.data);
     };
     fetchData().catch(console.error);
   }, []);
 
   //Stvori datum koji je 14 dana prije danasnjeg
-  const today = new Date()
-  const timestamp = new Date(today.getFullYear(), today.getMonth(), today.getDate()-14)
+  const today = new Date();
+  const timestamp = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() - 14
+  );
 
-  useEffect(() => {    
-    const filteredBooks = allBooks.filter((book) =>    
-      
-    //usporedi da li je manji od datuma prije 14 dana
-        Date.parse(book.dateStart) < timestamp       
-    
+  useEffect(() => {
+    const filteredBooks = allBookLoans.filter(
+      (bookLoan) =>
+        //usporedi da li je manji od datuma prije 14 dana
+        Date.parse(bookLoan.dateStart) < timestamp
     );
     setDisplayedBooks(filteredBooks);
-  }, [searchTerm, allBooks]);  
+    console.log(filteredBooks);
+  }, [searchTerm, allBookLoans]);
 
   return (
-    <div>      
-        Late loans:
+    <div>
+      Late loans:
       <List className={classes.root}>
-        {displayedBooks.map((book) => (
-          <ListItem key={book.bookId}>
+        {displayedBooks.map((bookLoan) => (
+          <ListItem key={bookLoan.bookId}>
             <ListItemText
-              primary={book.bookId}
-              secondary={Object.keys(book)
-                .filter((key) => key !== "title")
-                .map((key) => `${book[key]}`)
-                .join(" | ")}
-            />        
+              primary={bookLoan.book.name}
+              secondary={bookLoan.user.name}
+            />
           </ListItem>
         ))}
       </List>

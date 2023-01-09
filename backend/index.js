@@ -5,24 +5,24 @@ const bodyParser = require("body-parser");
 const config = require("dotenv").config();
 const { Role, User, Book, BookLoan } = require("./models");
 const { Op } = require("sequelize");
-const mysql=require("mysql");
+const mysql = require("mysql");
 
 const app = express();
 const port = 4000;
 
-const db=mysql.createConnection({
-  host:"localhost",
-  user:"root",
-  password:"",
-  database:"avplibrary",
-})
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "avplibrary",
+});
 
-db.connect((err)=>{
-  if(err){
+db.connect((err) => {
+  if (err) {
     throw err;
   }
-  console.log("Connection Accepted!")
-})
+  console.log("Connection Accepted!");
+});
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,7 +30,6 @@ app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 app.listen(port, () => {
   console.log("Running on port " + port);
 });
-
 
 app.post("/login", async (req, res) => {
   try {
@@ -71,7 +70,6 @@ app.post("/register", async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "An error occurred" });
   }
-  
 });
 
 app.post("/addBook", async (req, res) => {
@@ -89,10 +87,7 @@ app.post("/addBook", async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "An error occurred" });
   }
-  
 });
-
-
 
 app.post("/return-book", verifyJwt, async (req, res) => {
   try {
@@ -159,7 +154,6 @@ app.get("/available-books", async (req, res) => {
   return res.json(books);
 });
 
-
 app.get("/users", async (req, res) => {
   const users = await User.findAll();
   return res.json(users);
@@ -172,11 +166,11 @@ app.get("/books", async (req, res) => {
 });
 
 app.get("/loanedBooks", async (req, res) => {
-  const loanedBooks = await BookLoan.findAll();
+  const loanedBooks = await BookLoan.findAll({ include: [Book, User] });
   return res.json(loanedBooks);
 });
 
-app.get("/pending-users",  async (req, res) => {
+app.get("/pending-users", async (req, res) => {
   const loans = await BookLoan.findAll({ where: { dateEnd: null } });
   const userIds = loans.map((loan) => loan.userId);
   const users = await User.findAll({
@@ -201,9 +195,8 @@ app.get("/verify", verifyJwt, async (req, res) => {
   }
 });
 
-
 //nez jel radi jos
-app.get("/getBookById",  async (req, res) => {
+app.get("/getBookById", async (req, res) => {
   try {
     const book = await Book.findOne({
       where: { bookId: req.book.bookId },
@@ -218,4 +211,3 @@ app.get("/getBookById",  async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-
