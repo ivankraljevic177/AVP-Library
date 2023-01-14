@@ -9,7 +9,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import sample from "../PDF/muha.pdf";
 import Link from "@material-ui/core/Link";
-import { getAllBooks, borrowBook , returnBook} from "../utils/api/axios.js";
+import { getAllBooks, borrowBook, returnBook } from "../utils/api/axios.js";
 import { useUserContext } from "../utils/context/UserContextProvider";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,19 +36,18 @@ export default function SearchableBookList(props) {
   const [displayedBooks, setDisplayedBooks] = useState([]);
   const classes = useStyles();
   const [allBooks, setAllBooks] = useState([]);
-  const {user} = useUserContext();
+  const { user } = useUserContext();
 
   console.log(user);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
-
+  const fetchData = async () => {
+    const data = await getAllBooks(user.id);
+    setAllBooks(data.data);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAllBooks();
-      setAllBooks(data.data);
-    };
     fetchData().catch(console.error);
   }, []);
 
@@ -81,18 +80,20 @@ export default function SearchableBookList(props) {
                 .map((key) => `${book[key]}`)
                 .join(" | ")}
             />
-            <Link href="viewer" variant="body2" className={classes.link}>
-              View
-            </Link>
-            <IconButton aria-label="borrow" onClick={() =>borrowBook(book.id, user.id)}>
-              <AddCircleOutlineIcon />
-            </IconButton>
-            <IconButton
-              aria-label="return"
-              onClick={() =>returnBook(book.id, user.id)}
-            >
-              <RemoveCircleOutlineIcon />
-            </IconButton>
+            {book.currentlyLoaned ? (
+              <Link href="viewer" variant="body2" className={classes.link}>
+                View
+              </Link>
+            ) : (
+              <IconButton
+                aria-label="borrow"
+                onClick={() => {
+                  borrowBook(book.id, user.id).then(() => fetchData());
+                }}
+              >
+                <AddCircleOutlineIcon />
+              </IconButton>
+            )}
           </ListItem>
         ))}
       </List>

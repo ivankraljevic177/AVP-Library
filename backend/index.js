@@ -133,9 +133,10 @@ app.post("/borrow-book", verifyJwt, async (req, res) => {
   if (book === null) {
     return res.status(404).json({ message: "Book not found!" });
   }
-  if (book.copies <= 0) {
-    return res.status(400).json({ message: "Book is not available for loan!" });
-  }
+  // ovo nam ne treba kad smo se prebacili na "digitalne knjige"
+  //if (book.copies <= 0) {
+  //  return res.status(400).json({ message: "Book is not available for loan!" });
+  //}
   const loan = await BookLoan.create({
     bookId: req.body.bookId,
     userId: req.user.sub,
@@ -161,9 +162,34 @@ app.get("/users", async (req, res) => {
 });
 
 app.get("/books", async (req, res) => {
-  // vrati sve, filter je već napravljen na frontendu, ako ga neko oće pribacit ovdje, može
-  const books = await Book.findAll();
-  return res.json(books);
+  const userId = 1;
+
+  const books = await Book.findAll({
+    include: [
+      {
+        model: BookLoan,
+        required: false,
+        where: {
+          userId: userId,
+          dateStart: {
+            [Op.gte]: new Date(new Date() - 14 * 24 * 60 * 60 * 1000), // 14 days ago
+          },
+          dateEnd: null,
+        },
+      },
+    ],
+  });
+
+  const bookData = books.map((book) => {
+    const currentlyLoaned = book.bookloans.length > 0;
+    return {
+      id: book.id,
+      name: book.name,
+      currentlyLoaned: currentlyLoaned,
+    };
+  });
+
+  return res.json(bookData);
 });
 
 app.get("/loanedBooks", async (req, res) => {

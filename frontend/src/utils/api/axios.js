@@ -17,7 +17,7 @@ export const createUser = (newUser) => API.post("/register", newUser);
 export const loginUser = (newUser) => API.post("/login", newUser);
 
 export const getAllUsers = () => API.get("/users");
-export const getAllBooks = () => API.get("/books");
+export const getAllBooks = (userId) => API.get("/books", { userId: userId });
 export const getAllLoanedBooks = () => API.get("/loanedBooks");
 export const getBookLoanCounts = () => API.get("/books-with-loan-counts");
 export const getBookById = (bookId) => API.get("getBookById", bookId);
