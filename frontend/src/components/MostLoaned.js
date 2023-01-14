@@ -3,14 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import {
-  getAllBooks,
-  borrowBook,
-  returnBook,
-  getAllLoanedBooks,
-  getBookById,
-  getBookLoanCounts,
-} from "../utils/api/axios.js";
+import { getBookLoanCounts } from "../utils/api/axios.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {

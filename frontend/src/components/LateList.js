@@ -3,13 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import {
-  getAllBooks,
-  borrowBook,
-  returnBook,
-  getAllLoanedBooks,
-  getBookById,
-} from "../utils/api/axios.js";
+import { getAllLoanedBooks } from "../utils/api/axios.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,7 +62,7 @@ export default function SearchableBookList(props) {
 
   return (
     <div>
-      Late loans:
+      Expired loans, more than 14 days:
       <List className={classes.root}>
         {displayedBooks.map((bookLoan) => (
           <ListItem key={bookLoan.bookId}>

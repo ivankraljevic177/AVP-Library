@@ -20,9 +20,11 @@ export const getAllUsers = () => API.get("/users");
 export const getAllBooks = (userId) => API.get("/books", { userId: userId });
 export const getAllLoanedBooks = () => API.get("/loanedBooks");
 export const getBookLoanCounts = () => API.get("/books-with-loan-counts");
-export const getBookById = (bookId) => API.get("getBookById", bookId);
 
-export const addBook = (newBook) => API.post("/addBook", newBook);
+export const addBook = (newBook) =>
+  API.post("/addBook", newBook, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
 export const borrowBook = (bookId, userId) =>
   API.post("/borrow-book", { bookId, userId });

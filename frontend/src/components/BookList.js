@@ -6,8 +6,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
-import sample from "../PDF/muha.pdf";
 import Link from "@material-ui/core/Link";
 import { getAllBooks, borrowBook, returnBook } from "../utils/api/axios.js";
 import { useUserContext } from "../utils/context/UserContextProvider";
@@ -76,12 +74,15 @@ export default function SearchableBookList(props) {
             <ListItemText
               primary={book.name}
               secondary={Object.keys(book)
-                .filter((key) => key !== "title")
+                .filter(
+                  (key) =>
+                    key !== "name" && key !== "id" && key !== "currentlyLoaned"
+                )
                 .map((key) => `${book[key]}`)
                 .join(" | ")}
             />
             {book.currentlyLoaned ? (
-              <Link href="viewer" variant="body2" className={classes.link}>
+              <Link href={`viewer/${book.id}`} variant="body2">
                 View
               </Link>
             ) : (

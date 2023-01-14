@@ -23,7 +23,7 @@ const AppRouter = () => {
             <Route path="login" element={<Login />} />
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
             <Route path="/user/search" element={<SearchBooksPage />} />
-            <Route path="/viewer" element={<ViewerPage />} />
+            <Route path="/viewer/:id" element={<ViewerPage />} />
             <Route
               path="/admin/dashboard"
               element={

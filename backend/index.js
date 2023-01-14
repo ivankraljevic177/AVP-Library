@@ -7,7 +7,9 @@ const config = require("dotenv").config();
 const { Role, User, Book, BookLoan, sequelize } = require("./models");
 const { Op } = require("sequelize");
 const mysql = require("mysql");
-
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const fs = require("fs");
 const app = express();
 const port = 4000;
 
@@ -73,12 +75,13 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/addBook", async (req, res) => {
+app.post("/addBook", upload.single("file"), async (req, res) => {
   try {
     const [book, created] = await Book.findOrCreate({
       where: { name: req.body.name },
       defaults: {
         ...req.body,
+        file: req.file.filename,
       },
     });
     if (created) {
@@ -86,7 +89,7 @@ app.post("/addBook", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "An error occurred" });
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -161,8 +164,8 @@ app.get("/users", async (req, res) => {
   return res.json(users);
 });
 
-app.get("/books", async (req, res) => {
-  const userId = 1;
+app.get("/books", verifyJwt, async (req, res) => {
+  const userId = req.user.sub;
 
   const books = await Book.findAll({
     include: [
@@ -185,6 +188,10 @@ app.get("/books", async (req, res) => {
     return {
       id: book.id,
       name: book.name,
+      author: book.author,
+      format: book.format,
+      genre: book.genre,
+      publisher: book.publisher,
       currentlyLoaned: currentlyLoaned,
     };
   });
@@ -195,6 +202,33 @@ app.get("/books", async (req, res) => {
 app.get("/loanedBooks", async (req, res) => {
   const loanedBooks = await BookLoan.findAll({ include: [Book, User] });
   return res.json(loanedBooks);
+});
+
+app.get("/books/:id", async (req, res) => {
+  const book = await Book.findOne({ where: { id: req.params.id } });
+  if (book === null) {
+    return res.status(404).json({ message: "Book not found!" });
+  }
+
+  const fileName = book.file;
+  const filePath = `uploads/${fileName}`;
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      res.status(404).send("File not found");
+    } else {
+      // Read the file and send it as a response
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          res.status(500).send("Error reading file");
+        } else {
+          res.contentType("application/pdf");
+          res.end(data, "binary");
+        }
+      });
+    }
+  });
 });
 
 app.get("/books-with-loan-counts", async (req, res) => {
@@ -236,23 +270,6 @@ app.get("/verify", verifyJwt, async (req, res) => {
     }
 
     res.json(user);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-//nez jel radi jos
-app.get("/getBookById", async (req, res) => {
-  try {
-    const book = await Book.findOne({
-      where: { bookId: req.book.bookId },
-    });
-
-    if (!book) {
-      throw Error("User does not exist");
-    }
-
-    res.json(book);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

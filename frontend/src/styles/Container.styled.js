@@ -9,7 +9,7 @@ export const Container = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  border: 5px solid red;
+  border: 2px solid gray;
   display: flex;
   justify-content: center;
   align-items: center;

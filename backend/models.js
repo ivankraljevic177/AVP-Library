@@ -85,6 +85,10 @@ const Book = sequelize.define(
       type: Sequelize.INTEGER,
       allowNull: false,
     },
+    file: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
   },
   {
     timestamps: false,
